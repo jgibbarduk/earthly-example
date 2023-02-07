@@ -3,7 +3,7 @@ FROM openjdk:8-jdk-alpine
 
 
 ARG IMAGE_NAME=earthly-example
-ARG VERSION=1.0.0
+ARG VERSION=latest
 
 
 RUN apk add --update --no-cache gradle
@@ -12,6 +12,7 @@ WORKDIR /java-example
 deps:
     COPY build.gradle ./
     RUN gradle build
+    SAVE IMAGE --cache-hint
 
 build:
     FROM +deps
@@ -20,12 +21,13 @@ build:
     RUN gradle install
     SAVE ARTIFACT build/install/java-example/bin AS LOCAL build/bin
     SAVE ARTIFACT build/install/java-example/lib AS LOCAL build/lib
+    SAVE IMAGE --cache-hint
 
 docker:
     COPY +build/bin bin
     COPY +build/lib lib
     ENTRYPOINT ["/java-example/bin/java-example"]
-    SAVE IMAGE --push ghcr.io/jgibbarduk/$IMAGE_NAME:$VERSION
+    SAVE IMAGE --cache-hint $IMAGE_NAME:$VERSION
 
 integration-test:
     FROM earthly/dind:alpine
@@ -36,6 +38,7 @@ integration-test:
 		RUN while ! pg_isready --host=localhost --port=5432; do sleep 1; done ;\
 			docker run --network=default_java/part6_default app | grep "Opened database successfully!"
 	END
+    SAVE IMAGE --cache-hint
 
 publish:
     FROM +docker
