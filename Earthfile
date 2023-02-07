@@ -10,7 +10,6 @@ RUN apk add --update --no-cache gradle
 WORKDIR /java-example
 
 build-all:
-    BUILD +docker
     BUILD +integration-test
     BUILD +publish
 
@@ -32,7 +31,8 @@ docker:
     COPY +build/bin bin
     COPY +build/lib lib
     ENTRYPOINT ["/java-example/bin/java-example"]
-    SAVE IMAGE --cache-hint $IMAGE_NAME:$VERSION
+    SAVE IMAGE $IMAGE_NAME:$VERSION
+    SAVE IMAGE --cache-hint 
 
 integration-test:
     FROM earthly/dind:alpine
