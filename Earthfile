@@ -9,6 +9,11 @@ ARG VERSION=latest
 RUN apk add --update --no-cache gradle
 WORKDIR /java-example
 
+build-all:
+    BUILD +docker
+    BUILD +integration-test
+    BUILD +publish
+
 deps:
     COPY build.gradle ./
     RUN gradle build

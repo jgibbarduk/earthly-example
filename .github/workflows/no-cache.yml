@@ -39,5 +39,5 @@ jobs:
       run: earthly --version
       
     - name: Run build
-      run: earthly --allow-privileged --ci --push +publish
+      run: earthly --allow-privileged --push +build-all
 
