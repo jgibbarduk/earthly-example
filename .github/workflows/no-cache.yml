@@ -1,6 +1,6 @@
 # .github/workflows/ci.yml
 
-name: CI
+name: CI (no cache)
 
 on:
   push:
@@ -39,5 +39,5 @@ jobs:
       run: earthly --version
       
     - name: Run build
-      run: earthly --allow-privileged --ci --push --remote-cache=ghcr.io/jgibbarduk/earthly-example:cache +publish
+      run: earthly --allow-privileged --ci --push +publish
 

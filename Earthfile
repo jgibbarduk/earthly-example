@@ -42,4 +42,4 @@ integration-test:
 
 publish:
     FROM +docker
-    SAVE IMAGE --cache-from=ghcr.io/jgibbarduk/$IMAGE_NAME:cache --push ghcr.io/jgibbarduk/$IMAGE_NAME:$VERSION
+    SAVE IMAGE --push ghcr.io/jgibbarduk/$IMAGE_NAME:$VERSION
